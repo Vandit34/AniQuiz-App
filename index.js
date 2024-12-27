@@ -108,6 +108,9 @@ const questionBox = document.getElementsByClassName('question')[0]
 
 const prevBtnHTML = document.querySelector('.prev')
 const nextBtnHTML = document.querySelector('.next')
+const score = document.querySelector('.score')
+// let scoreValue =
+
 let traverseIndex = 0
 
 // =============== Updating the question & option ========================
@@ -155,29 +158,42 @@ const updateUI = () => {
       // console.log(btn.innerText)
       // optionData[traverseIndex].options
       const isCorrect = btn.getAttribute('data-correct') === 'true'
-      if (isCorrect) {
+
+      if (isCorrect && traverseIndex < questions.length - 1) {
         btn.style.backgroundColor = '#00ff55'
+        setTimeout(() => {
+          // if()
+          traverseIndex = traverseIndex + 1
+
+          scoreValue = Number(score.innerText) + 1
+          score.innerText = scoreValue
+
+          prevBtnHTML.setAttribute('disabled', '')
+          updateUI()
+        }, 1000)
+      } else if (isCorrect) {
+        btn.style.backgroundColor = '#00ff55'
+        setTimeout(() => {
+          scoreValue = Number(score.innerText) + 1
+          score.innerText = scoreValue
+          prevBtnHTML.setAttribute('disabled', '')
+          updateUI()
+        }, 1000)
+      } else if (!isCorrect && traverseIndex < questions.length - 1) {
+        btn.style.backgroundColor = '#ff3333'
         setTimeout(() => {
           traverseIndex = traverseIndex + 1
           updateUI()
         }, 1000)
       }
+      else {
+        // Incorrect answer for the last question
+        btn.style.backgroundColor = '#ff3333'; // Red for incorrect answer (last question)
+        setTimeout(() => {
+          updateUI(); // Update UI for the end of the quiz or show final results
+        }, 1000);
+      }
 
-      /*
-
-      optionData[traverseIndex].options.map((data, key) => {
-        if (btn.innerText === data.text && data.isCorrect === true) {
-          
-          btn.style.backgroundColor = '#00ff55'
-          // traverseIndex = traverseIndex + 1
-          // updateUI()        
-        }
-        // else {
-        //   btn.style.backgroundColor = '#ff3333'
-        // }
-      })
-
-      */
     })
   })
 
